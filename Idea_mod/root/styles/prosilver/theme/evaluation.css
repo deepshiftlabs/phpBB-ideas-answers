@@ -1,0 +1,62 @@
+span.Votes {
+    display: block;
+    line-height: normal;
+    padding: 0;
+    position: absolute;
+    text-align: center;
+     width: 44px;
+}
+span.Votes a.VoteUp, span.Votes a.NotVoteUp {
+    -moz-border-radius: 3px 3px 0 0;
+    line-height: 100%;
+    padding: 5px 4px 3px;
+    display: block;
+}
+span.Votes a.VoteDown, span.Votes a.NotVoteDown {
+    -moz-border-radius: 0 0 3px 3px;
+    line-height: 100%;
+    padding: 3px 4px 5px;
+    display: block;
+}
+span.Votes a {
+    background: none repeat scroll 0 0 #6C3F11;
+}
+span.Votes span {
+    background: none repeat scroll 0 0 #905417;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 1.2;
+    min-width: 36px;
+    display: block;
+    color: #FFFFFF;
+}
+i.ArrowSprite {
+    background: url("{T_THEME_PATH}/images/arrow_sprite.png") no-repeat scroll left top transparent;
+    display: inline-block;
+    height: 9px;
+    width: 13px;
+}
+i.SpriteDown {
+    background-position: left bottom;
+}
+span.Votes a.VoteUp:hover i {
+    background: url("{T_THEME_PATH}/images/arrow_sprite.png") no-repeat scroll right top transparent;
+    }
+span.Votes a.VoteDown:hover i {
+    background: url("{T_THEME_PATH}/images/arrow_sprite.png") no-repeat scroll right bottom transparent;
+    }
+
+dl.icon dt.eval {
+	padding-left: 10px;					/* Space for folder icon */
+}
+
+.eval_rate {
+    display: block; 
+    font-size: 13px; 
+    line-height: 12px;
+}
+.eval_rate_small {
+    display: block; 
+    font-size: 10px; 
+    line-height: 11px;
+}

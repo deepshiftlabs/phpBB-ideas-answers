@@ -1,0 +1,231 @@
+##############################################################
+## MOD Title: Topic solved 1.2.1 -> 1.3.0
+## MOD Author: tumba25
+##
+## Codechanges from 1.2.1 to 1.3.0
+##
+## MOD Version: 1.3.0
+##
+## Files To Edit:
+## search.php
+## viewforum.php
+## viewtopic.php
+## adm/style/acp_forums.html
+## includes/acp/acp_forums.php
+## language/en/acp/forums.php
+##
+##############################################################
+## Before Adding This MOD To Your Forum, You Should Back Up All Files Related To This MOD
+##############################################################
+#
+#-----[ SQL ]---------------------------------------------
+#
+ALTER TABLE phpbb_forums ADD forum_solve_text varchar(25) CHARACTER SET utf8 COLLATE utf8_bin NULL;
+
+#
+#-----[ OPEN ]---------------------------------------------
+#
+search.php
+
+#
+#-----[ FIND ]---------------------------------------------
+#
+			$sql = 'SELECT p.*, f.forum_id, f.forum_name, t.*, u.username, u.username_clean, u.user_sig, u.user_sig_bbcode_uid, u.user_colour
+
+#
+#-----[ INLINE FIND ]---------------------------------------------
+#
+f.forum_name,
+
+#
+#-----[ INLINE AFTER ADD ]---------------------------------------------
+#
+ f.forum_solve_text
+
+#
+#-----[ FIND ]---------------------------------------------
+#
+						'topic_status'		=> $rowset[$orig_topic_id]['topic_status'],
+
+#
+#-----[ AFTER ADD ]---------------------------------------------
+#
+// BEGIN Topic solved
+						'forum_solve_text'		=> $rowset[$orig_topic_id]['forum_solve_text'],
+// END Topic solved
+
+#
+#-----[ FIND ]---------------------------------------------
+#
+$solved_link = '&nbsp;' . $user->img('icon_topic_solved_post', 'TOPIC_SOLVED');
+
+#
+#-----[ REPLACE WITH ]---------------------------------------------
+#
+$solved_link = '&nbsp;' . (($row['forum_solve_text']) ? $row['forum_solve_text'] : $user->img('icon_topic_solved_post', 'TOPIC_SOLVED'));
+
+#
+#-----[ FIND ]---------------------------------------------
+#
+$solved_link = '&nbsp;<a href="' . append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$forum_id&amp;t=" . $row['topic_id'] . '&amp;p=' . $row['topic_solved'] . (($u_hilit) ? '&amp;hilit=' . $u_hilit : '') . '&amp;#p' . $row['topic_solved']) . '">' . $user->img('icon_topic_solved_list', 'TOPIC_SOLVED') . '</a>';
+
+#
+#-----[ REPLACE WITH ]---------------------------------------------
+#
+$solved_link = '&nbsp;<a href="' . append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$forum_id&amp;t=" . $row['topic_id'] . '&amp;p=' . $row['topic_solved'] . (($u_hilit) ? '&amp;hilit=' . $u_hilit : '') . '&amp;#p' . $row['topic_solved']) . '">' . (($row['forum_solve_text']) ? $row['forum_solve_text'] : $user->img('icon_topic_solved_list', 'TOPIC_SOLVED')) . '</a>';
+
+#
+#-----[ OPEN ]---------------------------------------------
+#
+viewforum.php
+
+#
+#-----[ FIND ]---------------------------------------------
+#
+'SOLVED_TOPIC'		=> ($row['topic_solved']) ? $user->img('icon_topic_solved_list', 'TOPIC_SOLVED') : '',
+
+#
+#-----[ REPLACE WITH ]---------------------------------------------
+#
+'SOLVED_TOPIC'		=> ($row['topic_solved']) ? (($forum_data['forum_solve_text']) ? $forum_data['forum_solve_text'] : $user->img('icon_topic_solved_list', 'TOPIC_SOLVED')) : '',
+
+#
+#-----[ OPEN ]---------------------------------------------
+#
+viewtopic.php
+
+#
+#-----[ FIND ]---------------------------------------------
+#
+'TOPIC_SOLVED_TITLE'	=> ($topic_data['topic_solved'] && $topic_data['forum_allow_solve']) ? '&nbsp;<a href="' . append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$forum_id&amp;t=" . $topic_data['topic_id'] . '&amp;p=' . $topic_data['topic_solved'] . '&amp;#p' . $topic_data['topic_solved']) . '">' . $user->img('icon_topic_solved_head', 'TOPIC_SOLVED') . '</a>' : '',
+
+#
+#-----[ REPLACE WITH ]---------------------------------------------
+#
+'TOPIC_SOLVED_TITLE'	=> ($topic_data['topic_solved'] && $topic_data['forum_allow_solve']) ? '&nbsp;<a href="' . append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$forum_id&amp;t=" . $topic_data['topic_id'] . '&amp;p=' . $topic_data['topic_solved'] . '&amp;#p' . $topic_data['topic_solved']) . '">' . (($topic_data['forum_solve_text']) ? $topic_data['forum_solve_text'] : $user->img('icon_topic_solved_head', 'TOPIC_SOLVED')) . '</a>' : '',
+
+#
+#-----[ FIND ]---------------------------------------------
+#
+'POST_SUBJECT'		=> ($topic_data['topic_solved'] == $row['post_id']) ? $row['post_subject'] . '&nbsp;&nbsp;' . $user->img('icon_topic_solved_post', 'TOPIC_SOLVED') : $row['post_subject'],
+
+#
+#-----[ REPLACE WITH ]---------------------------------------------
+#
+'POST_SUBJECT'		=> ($topic_data['topic_solved'] == $row['post_id']) ? $row['post_subject'] . '&nbsp;&nbsp;' . (($topic_data['forum_solve_text']) ? $topic_data['forum_solve_text'] : $user->img('icon_topic_solved_post', 'TOPIC_SOLVED')) : $row['post_subject'],
+
+#
+#-----[ OPEN ]---------------------------------------------
+#
+adm/style/acp_forums.html
+
+#
+#-----[ FIND ]---------------------------------------------
+#
+		<dl>
+			<dt><label for="forum_allow_solve">{L_ALLOW_SOLVE}:</label><br /><span>{L_ALLOW_SOLVE_EXPLAIN}</span></dt>
+			<dd><label><input type="radio" class="radio" name="forum_allow_solve" value="2"<!-- IF S_FORUM_LOCK_SOLVE --> id="forum_allow_solve" checked="checked"<!-- ENDIF --> /> {L_YES_LOCK_SOLVED}</label>
+			<label><input type="radio" class="radio" name="forum_allow_solve" value="1"<!-- IF S_FORUM_ALLOW_SOLVE --> id="forum_allow_solve" checked="checked"<!-- ENDIF --> /> {L_YES_NO_LOCK_SOLVED}</label>
+			<label><input type="radio" class="radio" name="forum_allow_solve" value="0"<!-- IF not S_FORUM_ALLOW_SOLVE and not S_FORUM_LOCK_SOLVE --> id="forum_allow_solve" checked="checked"<!-- ENDIF --> /> {L_NO}</label></dd>
+		</dl>
+		<dl>
+			<dt><label for="forum_allow_unsolve">{L_ALLOW_UNSOLVE}:</label><br /><span>{L_ALLOW_UNSOLVE_EXPLAIN}</span></dt>
+			<dd><label><input type="radio" class="radio" name="forum_allow_unsolve" value="1"<!-- IF S_FORUM_ALLOW_UNSOLVE --> id="forum_allow_unsolve" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
+				<label><input type="radio" class="radio" name="forum_allow_unsolve" value="0"<!-- IF not S_FORUM_ALLOW_UNSOLVE --> id="forum_allow_unsolve" checked="checked"<!-- ENDIF --> /> {L_NO}</label></dd>
+		</dl>
+
+#
+#-----[ REPLACE WITH ]---------------------------------------------
+# Nothing, just delete.
+
+#
+#-----[ FIND ]---------------------------------------------
+#
+	<fieldset class="submit-buttons">
+
+#
+#-----[ BEFORE ADD ]---------------------------------------------
+#
+	<div id="topic_solved_options">
+		<fieldset>
+			<legend>{L_TOPIC_SOLVED_SETTINGS}</legend>
+		<dl>
+			<dt><label for="forum_allow_solve">{L_ALLOW_SOLVE}:</label><br /><span>{L_ALLOW_SOLVE_EXPLAIN}</span></dt>
+			<dd><label><input type="radio" class="radio" name="forum_allow_solve" value="2"<!-- IF S_FORUM_LOCK_SOLVE --> id="forum_allow_solve" checked="checked"<!-- ENDIF --> /> {L_YES_LOCK_SOLVED}</label>
+			<label><input type="radio" class="radio" name="forum_allow_solve" value="1"<!-- IF S_FORUM_ALLOW_SOLVE --> id="forum_allow_solve" checked="checked"<!-- ENDIF --> /> {L_YES_NO_LOCK_SOLVED}</label>
+			<label><input type="radio" class="radio" name="forum_allow_solve" value="0"<!-- IF not S_FORUM_ALLOW_SOLVE and not S_FORUM_LOCK_SOLVE --> id="forum_allow_solve" checked="checked"<!-- ENDIF --> /> {L_NO}</label></dd>
+		</dl>
+		<dl>
+			<dt><label for="forum_allow_unsolve">{L_ALLOW_UNSOLVE}:</label><br /><span>{L_ALLOW_UNSOLVE_EXPLAIN}</span></dt>
+			<dd><label><input type="radio" class="radio" name="forum_allow_unsolve" value="1"<!-- IF S_FORUM_ALLOW_UNSOLVE --> id="forum_allow_unsolve" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
+				<label><input type="radio" class="radio" name="forum_allow_unsolve" value="0"<!-- IF not S_FORUM_ALLOW_UNSOLVE --> id="forum_allow_unsolve" checked="checked"<!-- ENDIF --> /> {L_NO}</label></dd>
+		</dl>
+		<dl>
+			<dt><label for="forum_solve_text">{L_FORUM_SOLVE_TEXT}:</label><br /><span>{L_FORUM_SOLVE_TEXT_EXPLAIN}</span></dt>
+			<dd><input type="text" id="forum_solve_text" name="forum_solve_text" value="{FORUM_SOLVE_TEXT}" size="10" maxlength="20" /></dd>
+		</dl>
+
+		</fieldset>
+	</div>
+
+#
+#-----[ OPEN ]---------------------------------------------
+#
+Open includes/acp/acp_forums.php
+
+#
+#-----[ FIND ]---------------------------------------------
+#
+						'forum_allow_unsolve'	=> request_var('forum_allow_unsolve', 1),
+
+#
+#-----[ AFTER ADD ]---------------------------------------------
+#
+						'forum_solve_text'	=> request_var('forum_solve_text', ''),
+
+#
+#-----[ FIND ]---------------------------------------------
+#
+					$forum_data['forum_allow_unsolve'] = $row['forum_allow_unsolve'];
+
+#
+#-----[ AFTER ADD ]---------------------------------------------
+#
+					$forum_data['forum_solve_text'] = $row['forum_solve_text'];
+
+#
+#-----[ FIND ]---------------------------------------------
+#
+							'forum_allow_unsolve'	=> 1,
+
+#
+#-----[ AFTER ADD ]---------------------------------------------
+#
+							'forum_solve_text'	=> '',
+
+#
+#-----[ FIND ]---------------------------------------------
+#
+					'S_FORUM_ALLOW_UNSOLVE'		=> $forum_data['forum_allow_unsolve'],
+
+#
+#-----[ AFTER ADD ]---------------------------------------------
+#
+					'FORUM_SOLVE_TEXT'		=> $forum_data['forum_solve_text'],
+
+#
+#-----[ OPEN ]---------------------------------------------
+#
+ language/en/acp/forums.php
+
+#
+#-----[ FIND ]---------------------------------------------
+#
+	'ALLOW_UNSOLVE_EXPLAIN' => 'Give users the ability to set a topic back as not solved.',
+
+#
+#-----[ AFTER ADD ]---------------------------------------------
+#
+	'TOPIC_SOLVED_SETTINGS' => 'Topic solved settings',
+	'FORUM_SOLVE_TEXT' => 'Choose text instead of solved-image',
+	'FORUM_SOLVE_TEXT_EXPLAIN' => 'You can have some text instead of the nice topic solved image. Ex [SOLVED] or [SOLD] or something else. Leave empty to use the topic solved image.',

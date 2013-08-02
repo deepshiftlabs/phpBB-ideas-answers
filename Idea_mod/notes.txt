@@ -1,0 +1,59 @@
+1. После установки модов порядок сортировки не учитывает рейтинг. Исправляем сами
+найти в vieforum.php:
+	// Select the sort order
+	$sql_sort_order = $sort_by_sql[$sort_key] . ' ' . (($sort_dir == 'd') ? 'DESC' : 'ASC');
+	$sql_start = $start;
+}
+вставить сразу после:
+    /* Idea/Answer changes */
+    evaluation_extend_sql_orderby();
+    /* End of Idea/Answer changes */
+
+при этом добавили собственно evaluation_extend_sql_orderby()
+
+найти в viewforum.php:
+$sql = 'SELECT t.topic_id
+	FROM ' . TOPICS_TABLE . " t
+	WHERE $sql_where
+		AND t.topic_type IN (" . POST_NORMAL . ', ' . POST_STICKY . ")
+		$sql_approved
+		$sql_limit_time
+	ORDER BY t.topic_type " . ((!$store_reverse) ? 'DESC' : 'ASC') . ', ' . $sql_sort_order;
+
+заменить на 
+if(1 == $forum_data['forum_evaluation'])
+{
+    $sql = evaluation_prepare_viewforum_topics_sql();
+}
+else
+{
+$sql = 'SELECT t.topic_id
+	FROM ' . TOPICS_TABLE . " t
+	WHERE $sql_where
+		AND t.topic_type IN (" . POST_NORMAL . ', ' . POST_STICKY . ")
+		$sql_approved
+		$sql_limit_time
+	ORDER BY t.topic_type " . ((!$store_reverse) ? 'DESC' : 'ASC') . ', ' . $sql_sort_order;
+}
+
+при этом добавили собственно evaluation_prepare_viewforum_topics_sql()
+
+
+
+2. Зачем в таблицу с форумами добавляется поле forum_evaluation? Видимо для "Number of evaluation stars" - http://www.phpbb.com/customise/db/mod/topic_evaluation
+   Нужно переделать на флаг - Да/нет (использовать форум как Идеи или нет)
+Для этого изменили includes/mods/ideas_answer/acp_forums.php и adm/style/acp_forums.html
+
+
+3. Включить права на голосование за идеи в стандартный набор прав зарегистрированного пользователя
+    Админам - на все, зарегистрированным пользователям - частично
+Добавил группы в инсталляционный скрипт, возможно это решит и задачу 4. - нифига не сработало
+Все-таки удобнее будет, чтобы каждый решал какая группа что может, а что - нет
+
+4. Просмотр рейтинга работает только для залогоненного пользователя, надо бы сделать для всех.
+  решается установкой прав доступа - разрешаем просмотр рейтинга для гостей
+
+5. для форума с идеями использовать собственную картинку
+ это нужно делать в functions_display - $folder_image
+
+6. учесть новый флаг используется ли форум для идей, чтобы показывать кнопки голосования и результаты

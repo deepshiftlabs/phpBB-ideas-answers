@@ -1,0 +1,30 @@
+<!-- IF S_KEYWORD_VERSION -->
+<!--
+/**
+ *
+ * @author Erik Frèrejean
+ *
+ * @package Subject Prefix
+ * @copyright (c) 2010 Erik Frèrejean ( erikfrerejean@phpbb.com ) http://www.erikfrerejean.nl
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ *
+ */
+//-->
+<!-- ENDIF -->
+
+<!-- IF S_SUBJECT_PREFIX_OPTIONS -->
+	<dl style="clear: left;">
+		<dt><label for="subjectprefix">{L_SUBJECT_PREFIX}:</label></dt>
+		<dd><select name="subjectprefix" id="subjectprefix">{S_SUBJECT_PREFIX_OPTIONS}</select></dd>
+	</dl>
+<!-- ENDIF -->
+
+<!-- IF S_SUBJECT_PREFIX_QUICK_MOD -->
+    <!-- IF S_TOPIC_MOD --><br class="clear" /><!-- ENDIF -->
+    <form method="post" action="{S_SUBJECT_PREFIX_QUICK_MOD_ACTION}">
+	<fieldset class="quickmod">
+		<label for="prefixid">{L_SUBJECT_PREFIX_QUICK_MOD}:</label> <select name="prefixid" id="prefixid">{S_SUBJECT_PREFIX_QUICK_MOD}</select> <input type="submit" value="{L_GO}" class="button2" />
+		{S_FORM_TOKEN}
+	</fieldset>
+    </form>
+<!-- ENDIF -->

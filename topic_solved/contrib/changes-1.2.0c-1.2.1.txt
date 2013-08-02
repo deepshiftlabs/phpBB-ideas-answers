@@ -1,0 +1,72 @@
+##############################################################
+## MOD Title: Topic solved 1.2.0c -> 1.2.1
+## MOD Author: tumba25
+## MOD Description:
+##
+## Codechanges from 1.2.0c to 1.2.1
+##
+## MOD Version: 1.2.1
+##
+## Files To Edit:
+## includes/search/fulltext_native.php
+##
+##############################################################
+## Before Adding This MOD To Your Forum, You Should Back Up All Files Related To This MOD
+##############################################################
+
+#
+#-----[ OPEN ]---------------------------------------------
+#
+includes/search/fulltext_native.php
+
+#
+#-----[ FIND ]---------------------------------------------
+#
+// BEGIN Topic solved
+		$solv_where = ($search_solv) ? ' AND t.topic_solved > 0 ' : '';
+// END Topic solved
+
+#
+#-----[ REPLACE WITH ]---------------------------------------------
+#
+// Nothing just delete.
+
+#
+#-----[ FIND ]---------------------------------------------
+#
+				$sql_where[] = 'p.post_id = t.topic_first_post_id' . $solv_where;
+
+#
+#-----[ REPLACE WITH ]---------------------------------------------
+#
+				$sql_where[] = 'p.post_id = t.topic_first_post_id';
+
+#
+#-----[ FIND ]---------------------------------------------
+# This line should not be in your phpBB 3.0.4
+				$sql_where[] = 'p.topic_id = t.topic_id' . $solv_where;
+
+#
+#-----[ REPLACE WITH ]---------------------------------------------
+#
+				$sql_where[] = 'p.topic_id = t.topic_id';
+
+#
+#-----[ FIND ]---------------------------------------------
+#
+		if ($type == 'topics')
+
+#
+#-----[ BEFORE ADD ]---------------------------------------------
+#
+// BEGIN Topic solved
+		if($search_solv > 0)
+		{
+			$sql_where[] = 't.topic_solved > 0';
+		}
+// END Topic solved
+
+#
+#-----[ SAVE/CLOSE ALL FILES ]------------------------------------------
+#
+# EoM

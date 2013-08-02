@@ -1,0 +1,85 @@
+##############################################################
+## MOD Title: Topic solved 1.3.1 -> 1.3.2
+## MOD Author: tumba25
+##
+## Codechanges from 1.3.1 to 1.3.2
+##
+## MOD Version: 1.3.2
+##
+## Files To Edit:
+## includes/acp/acp_forums.php
+##
+## Files To Copy:
+## adm/style/acp_topic_solved.html
+##
+##############################################################
+## Before Adding This MOD To Your Forum, You Should Back Up All Files Related To This MOD
+##############################################################
+#
+#-----[ COPY ]---------------------------------------------
+#
+root/adm/style/acp_topic_solved.html TO adm/style/acp_topic_solved.html
+
+#
+#-----[ OPEN ]---------------------------------------------
+#
+adm/style/acp_forums.html
+
+#
+#-----[ FIND ]---------------------------------------------
+#
+				dE('forum_cat_options', 1);
+			}
+
+#
+#-----[ AFTER ADD ]---------------------------------------------
+#
+		/**
+		* BEGIN Topic solved
+		*/
+			if(value == {FORUM_POST})
+			{
+				dE('topic_solved_options', 1);
+			}
+			else
+			{
+				dE('topic_solved_options', -1);
+			}
+		/**
+		* END Topic solved
+		*/
+
+#
+#-----[ FIND ]---------------------------------------------
+#
+			<!-- IF not S_FORUM_POST -->
+
+#
+#-----[ AFTER ADD ]---------------------------------------------
+#
+				dE('topic_solved_options', -1);
+
+#
+#-----[ OPEN ]---------------------------------------------
+#
+includes/acp/acp_forums.php
+
+#
+#-----[ FIND ]---------------------------------------------
+#
+						'forum_solve_color'	=> request_var('forum_solve_color', ''),
+
+#
+#-----[ REPLACE WITH ]---------------------------------------------
+#
+						'forum_solve_color'	=> trim(request_var('forum_solve_color', '')),
+
+#
+#-----[ FIND ]---------------------------------------------
+#
+					'FORUM_USER_SOLVE' => $forum_data['forum_user_solve'],
+
+#
+#-----[ AFTER ADD ]---------------------------------------------
+#
+					'FORUM_SOLVE_IMG' => ($forum_data['forum_solve_text']) ? '' : $user->img('icon_topic_solved_head', 'TOPIC_SOLVED'),

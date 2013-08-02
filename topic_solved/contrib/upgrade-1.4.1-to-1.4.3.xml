@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml-stylesheet type="text/xsl" href="./xsl/modx.prosilver.en.xsl"?>
+<!--
+	NOTICE: Please open this file in your web browser. If presented with a security warning, you may safely tell it to allow the blocked content.
+-->
+<!--For security purposes, please check: http://www.phpbb.com/mods/ for the latest version of this MOD. Although MODs are checked before being allowed in the MODs Database there is no guarantee that there are no security problems within the MOD. No support will be given for MODs not found within the MODs Database which can be found at http://www.phpbb.com/mods/-->
+<mod xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.phpbb.com/mods/xml/modx-1.2.3.xsd">
+	<header>
+		<license>http://opensource.org/licenses/gpl-license.php GNU General Public License v2</license>
+		<title lang="en-gb">Topic Solved - Upgrade 1.4.1 to 1.4.2RC1 </title>
+		<description lang="en-gb">Using this upgrade requires Topic Solved 1.4.1</description>
+		<author-notes lang="en">Note that this MOD-upgrade is development quality and should not be used on a live board.</author-notes>
+		<author-group>
+			<author>
+				<realname>Jari Kanerva</realname>
+				<email>tumba25@gmail.com</email>
+				<username>tumba25</username>
+				<homepage>http://skripter.se</homepage>
+			</author>
+		</author-group>
+		<mod-version>1.4.3 upgrade</mod-version>
+		<installation>
+			<level>intermediate</level>
+			<time>1800</time>
+			<target-version>3.0.4</target-version>
+		</installation>
+		<link-group>
+			<link type="template" lang="en-gb" href="../install.xml">Main 1.4.1 install</link>
+		</link-group>
+		<history>
+			<entry>
+				<date>2009-01-12</date>
+				<rev-version>1.4.2RC1 upgrade</rev-version>
+				<changelog lang="en-gb">
+					<change>Solved topics can be seen in MCP and UCP</change>
+					<change>Global announcements do not belong to any forum and can't be solved</change>
+					<change>Shows solved posts in previews</change>
+				</changelog>
+			</entry>
+		</history>
+	</header>
+	<action-group>
+		<open src="viewforum.php">
+			<edit>
+				<find><![CDATA[			'SOLVED_TOPIC'		=> ($row['topic_solved']) ? (($forum_data['forum_solve_text']) ? $forum_data['forum_solve_text'] : $user->img('icon_topic_solved_list', 'TOPIC_SOLVED')) : '',
+			'U_SOLVED_TOPIC'	=> ($row['topic_solved']) ? $view_topic_url . '&amp;p=' . $row['topic_solved'] . '#p' . $row['topic_solved'] : '',]]></find>
+				<action type="replace-with"><![CDATA[			'SOLVED_TOPIC'		=> ($row['topic_solved'] && $row['topic_type'] != POST_GLOBAL) ? (($forum_data['forum_solve_text']) ? $forum_data['forum_solve_text'] : $user->img('icon_topic_solved_list', 'TOPIC_SOLVED')) : '',
+			'U_SOLVED_TOPIC'	=> ($row['topic_solved'] && $row['topic_type'] != POST_GLOBAL) ? $view_topic_url . '&amp;p=' . $row['topic_solved'] . '#p' . $row['topic_solved'] : '',]]></action>
+			</edit>
+		</open>
+		<open src="viewtopic.php">
+			<edit>
+				<find><![CDATA[if($solved_id || $unsolved)]]></find>
+				<action type="replace-with"><![CDATA[if(($solved_id || $unsolved) && $topic_data['topic_type'] != POST_GLOBAL)]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA['TOPIC_SOLVED_TITLE'	=> ($topic_data['topic_solved'] && $topic_data['forum_allow_solve']) ? '&nbsp;<a href="' . append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$forum_id&amp;t=" . $topic_data['topic_id'] . '&amp;p=' . $topic_data['topic_solved'] . '&amp;#p' . $topic_data['topic_solved']) . '"' . (($topic_data['forum_solve_color']) ? ' style="color: #' . $topic_data['forum_solve_color'] . '"' : '') . '>' . (($topic_data['forum_solve_text']) ? $topic_data['forum_solve_text'] : $user->img('icon_topic_solved_head', 'TOPIC_SOLVED')) . '</a>' : '',]]></find>
+				<inline-edit>
+					<inline-find><![CDATA[($topic_data['topic_solved'] && $topic_data['forum_allow_solve']]]></inline-find>
+					<inline-action type="after-add"><![CDATA[ && $topic_data['topic_type'] != POST_GLOBAL]]></inline-action>
+				</inline-edit>
+			</edit>
+			<edit>
+				<find><![CDATA[	$ok_solve = (($topic_data['forum_allow_solve'] == TOPIC_SOLVED_YES) && $topic_data['topic_poster'] == $user->data['user_id'] && $topic_data['topic_status'] == ITEM_UNLOCKED) ? TRUE : $ok_solve;]]></find>
+				<action type="after-add"><![CDATA[	$ok_solve = ($topic_data['topic_type'] == POST_GLOBAL) ? FALSE : $ok_solve;]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[	$ok_unsolve = (($topic_data['forum_allow_unsolve'] == TOPIC_SOLVED_YES) && $topic_data['topic_poster'] == $user->data['user_id'] && $topic_data['topic_status'] == ITEM_UNLOCKED) ? TRUE : $ok_unsolve;]]></find>
+				<action type="after-add"><![CDATA[	$ok_unsolve = ($topic_data['topic_type'] == POST_GLOBAL) ? FALSE : $ok_unsolve;]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA['POST_SUBJECT'		=> ($topic_data['topic_solved'] == $row['post_id']) ? $row['post_subject'] . '&nbsp;&nbsp;' . (($topic_data['forum_solve_text']) ? (($topic_data['forum_solve_color']) ? '<span style="color: #' . $topic_data['forum_solve_color'] . '">' : '') . $topic_data['forum_solve_text'] . (($topic_data['forum_solve_color']) ? '</span>' : '') : $user->img('icon_topic_solved_post', 'TOPIC_SOLVED')) : $row['post_subject'],]]></find>
+				<inline-edit>
+					<inline-find><![CDATA[$topic_data['topic_solved'] == $row['post_id']]]></inline-find>
+					<inline-action type="after-add"><![CDATA[ && $topic_data['topic_type'] != POST_GLOBAL]]></inline-action>
+				</inline-edit>
+			</edit>
+		</open>
+		<open src="includes/functions_posting.php">
+			<edit>
+				<find><![CDATA[	global $config, $phpbb_root_path, $phpEx;]]></find>
+				<action type="after-add"><![CDATA[	// BEGIN Topic solved
+	// Is this topic solved?
+	$sql = 'SELECT t.topic_solved, f.forum_solve_text, f.forum_solve_color, f.forum_allow_solve
+		FROM ' . TOPICS_TABLE . ' t, ' . FORUMS_TABLE . ' f
+		WHERE t.topic_id = ' . $topic_id . '
+		AND f.forum_id = ' . $forum_id;
+	$result = $db->sql_query($sql);
+	$solved_row = $db->sql_fetchrow($result);
+	$db->sql_freeresult($result);
+	// END Topic solved]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[			'POST_SUBJECT'		=> $post_subject,]]></find>
+				<action type="replace-with"><![CDATA[			// BEGIN Topic solved
+			'POST_SUBJECT'		=> ($solved_row['topic_solved'] == $row['post_id']) ? $post_subject . '&nbsp;&nbsp;' . (($solved_row['forum_solve_text']) ? (($solved_row['forum_solve_color']) ? '<span style="color: #' . $solved_row['forum_solve_color'] . '">' : '') . $solved_row['forum_solve_text'] . (($solved_row['forum_solve_color']) ? '</span>' : '') : $user->img('icon_topic_solved_post', 'TOPIC_SOLVED')) : $post_subject,
+			// END Topic solved]]></action>
+			</edit>
+		</open>
+		<open src="includes/mcp/mcp_forum.php">
+			<edit>
+				<find><![CDATA[		$topic_row = array(]]></find>
+				<action type="after-add"><![CDATA[			// BEGIN Topic solved
+			'SOLVED_TOPIC'		=> ($row['topic_solved'] && $row['topic_type'] != POST_GLOBAL) ? (($forum_info['forum_solve_text']) ? $forum_info['forum_solve_text'] : $user->img('icon_topic_solved_list', 'TOPIC_SOLVED')) : '',
+			'U_SOLVED_TOPIC'	=> ($row['topic_solved']) ? append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'p=' . $row['topic_solved'] . '#p' . $row['topic_solved']) : '',
+			'SOLVED_STYLE' => ($forum_info['forum_solve_color']) ? ' style="color: #' . $forum_info['forum_solve_color'] . '"' : '',
+			// END Topic solved]]></action>
+			</edit>
+		</open>
+		<open src="includes/mcp/mcp_front.php">
+			<edit>
+				<find><![CDATA[$sql = 'SELECT p.post_id, p.post_subject, p.post_time, p.poster_id, p.post_username, u.username, u.username_clean, u.user_colour, t.topic_id, t.topic_title, t.topic_first_post_id, p.forum_id]]></find>
+				<inline-edit>
+					<inline-find><![CDATA[p.forum_id]]></inline-find>
+					<inline-action type="after-add"><![CDATA[, f.forum_solve_text, f.forum_solve_color, f.forum_allow_solve, t.topic_solved]]></inline-action>
+				</inline-edit>
+			</edit>
+			<edit>
+				<find><![CDATA[FROM ' . POSTS_TABLE . ' p, ' . TOPICS_TABLE . ' t, ' . USERS_TABLE . ' u]]></find>
+				<inline-edit>
+					<inline-find><![CDATA[USERS_TABLE . ' u]]></inline-find>
+					<inline-action type="after-add"><![CDATA[, ' . FORUMS_TABLE . ' f]]></inline-action>
+				</inline-edit>
+			</edit>
+			<edit>
+				<find><![CDATA[						AND p.poster_id = u.user_id]]></find>
+				<action type="after-add"><![CDATA[						AND f.forum_id = p.forum_id]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[						'TOPIC_TITLE'	=> $row['topic_title'],]]></find>
+				<action type="replace-with"><![CDATA[						// BEGIN Topic solved
+						'TOPIC_TITLE'		=> ($row['topic_solved'] && $row['forum_allow_solve'] && !$global_topic) ? $row['topic_title'] . (($row['forum_solve_text']) ? (($row['forum_solve_color']) ? '<span style="color: #' . $row['forum_solve_color'] . '">' : '') . $row['forum_solve_text'] . (($row['forum_solve_color']) ? '</span>' : '') : $user->img('icon_topic_solved_list', 'TOPIC_SOLVED')) : $row['topic_title'],
+						// END Topic solved]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA['SELECT'	=> 'r.report_time, p.post_id, p.post_subject, p.post_time, u.username, u.username_clean, u.user_colour, u.user_id, u2.username as author_name, u2.username_clean as author_name_clean, u2.user_colour as author_colour, u2.user_id as author_id, t.topic_id, t.topic_title, f.forum_id, f.forum_name',]]></find>
+				<inline-edit>
+					<inline-find><![CDATA[f.forum_name]]></inline-find>
+					<inline-action type="after-add"><![CDATA[, f.forum_solve_text, f.forum_solve_color, f.forum_allow_solve, t.topic_solved]]></inline-action>
+				</inline-edit>
+			</edit>
+			<edit>
+				<find><![CDATA[						'SUBJECT'		=> ($row['post_subject']) ? $row['post_subject'] : $user->lang['NO_SUBJECT'],]]></find>
+				<action type="replace-with"><![CDATA[						// BEGIN Topic solved
+						'SUBJECT'		=> ($row['topic_solved'] && $row['forum_allow_solve'] && !$global_topic) ? (($row['post_subject']) ? $row['post_subject'] : $user->lang['NO_SUBJECT']) . '&nbsp;&nbsp;' . (($row['forum_solve_text']) ? (($row['forum_solve_color']) ? '<span style="color: #' . $row['forum_solve_color'] . '">' : '') . $row['forum_solve_text'] . (($row['forum_solve_color']) ? '</span>' : '') : $user->img('icon_topic_solved_list', 'TOPIC_SOLVED')) : (($row['post_subject']) ? $row['post_subject'] : $user->lang['NO_SUBJECT']),
+						// END Topic solved]]></action>
+			</edit>
+		</open>
+		<open src="includes/mcp/mcp_reports.php">
+			<edit>
+				<find><![CDATA['TOPIC_TITLE'		=> $post_info['topic_title'])]]></find>
+				<inline-edit>
+					<inline-find><![CDATA[$post_info['topic_title']]]></inline-find>
+					<inline-action type="after-add"><![CDATA[ . (($post_info['topic_solved'] && $post_info['topic_type'] != POST_GLOBAL) ? ' ' . (($post_info['forum_solve_text']) ? $post_info['forum_solve_text'] : $user->img('icon_topic_solved_list', 'TOPIC_SOLVED')) : '')]]></inline-action>
+				</inline-edit>
+			</edit>
+			<edit>
+				<find><![CDATA[					'POST_SUBJECT'			=> ($post_info['post_subject']) ? $post_info['post_subject'] : $user->lang['NO_SUBJECT'],]]></find>
+				<action type="replace-with"><![CDATA[					// BEGIN Topic solved
+					'POST_SUBJECT'		=> ($post_info['topic_solved'] == $post_info['post_id'] && $post_info['forum_allow_solve'] && $post_info['topic_type'] != POST_GLOBAL) ? (($post_info['post_subject']) ? $post_info['post_subject'] : $user->lang['NO_SUBJECT']) . '&nbsp;&nbsp;' . (($post_info['forum_solve_text']) ? (($post_info['forum_solve_color']) ? '<span style="color: #' . $post_info['forum_solve_color'] . '">' : '') . $post_info['forum_solve_text'] . (($post_info['forum_solve_color']) ? '</span>' : '') : $user->img('icon_topic_solved_post', 'TOPIC_SOLVED')) : (($post_info['post_subject']) ? $post_info['post_subject'] : $user->lang['NO_SUBJECT']),
+					// END Topic solved]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[$sql = 'SELECT t.forum_id, t.topic_id, t.topic_title, p.post_id, p.post_subject, p.post_username, p.poster_id, p.post_time, u.username, u.username_clean, u.user_colour, r.user_id as reporter_id, ru.username as reporter_name, ru.user_colour as reporter_colour, r.report_time, r.report_id]]></find>
+				<inline-edit>
+					<inline-find><![CDATA[$sql = 'SELECT]]></inline-find>
+					<inline-action type="after-add"><![CDATA[ f.forum_solve_text, f.forum_solve_color, f.forum_allow_solve, t.topic_solved,]]></inline-action>
+				</inline-edit>
+			</edit>
+			<edit>
+				<find><![CDATA[FROM ' . REPORTS_TABLE . ' r, ' . POSTS_TABLE . ' p, ' . TOPICS_TABLE . ' t, ' . USERS_TABLE . ' u, ' . USERS_TABLE . ' ru]]></find>
+				<inline-edit>
+					<inline-find><![CDATA[USERS_TABLE . ' ru]]></inline-find>
+					<inline-action type="after-add"><![CDATA[, ' . FORUMS_TABLE . ' f]]></inline-action>
+				</inline-edit>
+			</edit>
+			<edit>
+				<find><![CDATA[							AND ru.user_id = r.user_id]]></find>
+				<action type="after-add"><![CDATA[							AND f.forum_id = t.forum_id]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[							'POST_SUBJECT'	=> ($row['post_subject']) ? $row['post_subject'] : $user->lang['NO_SUBJECT'],]]></find>
+				<action type="replace-with"><![CDATA[							// BEGIN Topic solved
+							'POST_SUBJECT'		=> ($row['topic_solved'] && $row['forum_allow_solve'] && !$global_topic) ? (($row['post_subject']) ? $row['post_subject'] : $user->lang['NO_SUBJECT']) . '&nbsp;&nbsp;' . (($row['forum_solve_text']) ? (($row['forum_solve_color']) ? '<span style="color: #' . $row['forum_solve_color'] . '">' : '') . $row['forum_solve_text'] . (($row['forum_solve_color']) ? '</span>' : '') : $user->img('icon_topic_solved_list', 'TOPIC_SOLVED')) : (($row['post_subject']) ? $row['post_subject'] : $user->lang['NO_SUBJECT']),
+							// END Topic solved]]></action>
+			</edit>
+		</open>
+		<open src="includes/ucp/ucp_main.php">
+			<edit>
+				<find><![CDATA['SELECT'	=> 't.*, f.forum_name',]]></find>
+				<inline-edit>
+					<inline-find><![CDATA[f.forum_name]]></inline-find>
+					<inline-action type="after-add"><![CDATA[, f.forum_solve_text, f.forum_solve_color, f.forum_allow_solve]]></inline-action>
+				</inline-edit>
+			</edit>
+			<edit>
+				<find><![CDATA['SELECT'	=> 't.*, f.forum_name, b.topic_id as b_topic_id',]]></find>
+				<inline-edit>
+					<inline-find><![CDATA[f.forum_name]]></inline-find>
+					<inline-action type="after-add"><![CDATA[, f.forum_solve_text, f.forum_solve_color, f.forum_allow_solve]]></inline-action>
+				</inline-edit>
+			</edit>
+			<edit>
+				<find><![CDATA[				'U_VIEW_FORUM'			=> append_sid("{$phpbb_root_path}viewforum.$phpEx", 'f=' . $forum_id),]]></find>
+				<action type="after-add"><![CDATA[				// BEGIN Topic solved
+				'SOLVED_TOPIC'		=> ($row['topic_solved'] && $row['forum_allow_solve']) ? (($row['forum_solve_text']) ? $row['forum_solve_text'] : $user->img('icon_topic_solved_list', 'TOPIC_SOLVED')) : '',
+				'U_SOLVED_TOPIC'	=> ($row['topic_solved'] && $row['forum_allow_solve']) ? append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'p=' . $row['topic_solved'] . '#p' . $row['topic_solved']) : '',
+				'SOLVED_STYLE' => ($row['forum_solve_color']) ? ' style="color: #' . $row['forum_solve_color'] . '"' : '',
+				// END Topic solved]]></action>
+			</edit>
+		</open>
+		<open src="styles/prosilver/template/mcp_forum.html">
+			<edit>
+				<find><![CDATA[<a href="{topicrow.U_VIEW_TOPIC}" class="topictitle">{topicrow.TOPIC_TITLE}</a>]]></find>
+				<inline-edit>
+					<inline-find><![CDATA[class="topictitle">{topicrow.TOPIC_TITLE}</a>]]></inline-find>
+					<inline-action type="after-add"><![CDATA[<!-- IF topicrow.SOLVED_TOPIC -->&nbsp;&nbsp;<a href="{topicrow.U_SOLVED_TOPIC}" class="topictitle"{topicrow.SOLVED_STYLE}>{topicrow.SOLVED_TOPIC}</a><!-- ENDIF -->]]></inline-action>
+				</inline-edit>
+			</edit>
+		</open>
+		<open src="styles/prosilver/template/ucp_main_bookmarks.html">
+			<edit>
+				<find><![CDATA[<!-- IF topicrow.S_UNREAD_TOPIC --><a href="{topicrow.U_NEWEST_POST}">{NEWEST_POST_IMG}</a> <!-- ENDIF --><a href="{topicrow.U_VIEW_TOPIC}" class="topictitle">{topicrow.TOPIC_TITLE}</a>]]></find>
+				<inline-edit>
+					<inline-find><![CDATA[topictitle">{topicrow.TOPIC_TITLE}</a>]]></inline-find>
+					<inline-action type="after-add"><![CDATA[<!-- IF topicrow.SOLVED_TOPIC -->&nbsp;&nbsp;<a href="{topicrow.U_SOLVED_TOPIC}" class="topictitle"{topicrow.SOLVED_STYLE}>{topicrow.SOLVED_TOPIC}</a><!-- ENDIF -->]]></inline-action>
+				</inline-edit>
+			</edit>
+		</open>
+		<open src="styles/prosilver/template/ucp_main_subscribed.html">
+			<edit>
+				<find><![CDATA[<!-- IF topicrow.S_UNREAD_TOPIC --><a href="{topicrow.U_NEWEST_POST}">{NEWEST_POST_IMG}</a> <!-- ENDIF --><a href="{topicrow.U_VIEW_TOPIC}" class="topictitle">{topicrow.TOPIC_TITLE}</a>]]></find>
+				<inline-edit>
+					<inline-find><![CDATA[topictitle">{topicrow.TOPIC_TITLE}</a>]]></inline-find>
+					<inline-action type="after-add"><![CDATA[<!-- IF topicrow.SOLVED_TOPIC -->&nbsp;&nbsp;<a href="{topicrow.U_SOLVED_TOPIC}" class="topictitle"{topicrow.SOLVED_STYLE}>{topicrow.SOLVED_TOPIC}</a><!-- ENDIF -->]]></inline-action>
+				</inline-edit>
+			</edit>
+		</open>
+		<open src="styles/subsilver2/template/mcp_forum.html">
+			<edit>
+				<find><![CDATA[<p class="topictitle">{NEWEST_POST_IMG} {topicrow.ATTACH_ICON_IMG} <a href="{topicrow.U_VIEW_TOPIC}">{topicrow.TOPIC_TITLE}</a>]]></find>
+				<inline-edit>
+					<inline-find><![CDATA[topicrow.U_VIEW_TOPIC}">{topicrow.TOPIC_TITLE}</a>]]></inline-find>
+					<inline-action type="after-add"><![CDATA[<!-- IF topicrow.SOLVED_TOPIC -->&nbsp;&nbsp;<a href="{topicrow.U_SOLVED_TOPIC}" class="topictitle"{topicrow.SOLVED_STYLE}>{topicrow.SOLVED_TOPIC}</a><!-- ENDIF -->]]></inline-action>
+				</inline-edit>
+			</edit>
+		</open>
+		<open src="styles/subsilver2/template/ucp_main_bookmarks.html">
+			<edit>
+				<find><![CDATA[<p class="topictitle"><!-- IF topicrow.S_UNREAD_TOPIC --><a href="{topicrow.U_NEWEST_POST}">{NEWEST_POST_IMG}</a> <!-- ENDIF -->{topicrow.ATTACH_ICON_IMG} <a href="{topicrow.U_VIEW_TOPIC}">{topicrow.TOPIC_TITLE}</a></p>]]></find>
+				<inline-edit>
+					<inline-find><![CDATA[topicrow.U_VIEW_TOPIC}">{topicrow.TOPIC_TITLE}</a>]]></inline-find>
+					<inline-action type="after-add"><![CDATA[<!-- IF topicrow.SOLVED_TOPIC -->&nbsp;&nbsp;<a href="{topicrow.U_SOLVED_TOPIC}" class="topictitle"{topicrow.SOLVED_STYLE}>{topicrow.SOLVED_TOPIC}</a><!-- ENDIF -->]]></inline-action>
+				</inline-edit>
+			</edit>
+		</open>
+		<open src="styles/subsilver2/template/ucp_main_subscribed.html">
+			<edit>
+				<find><![CDATA[<p class="topictitle"><!-- IF topicrow.S_UNREAD_TOPIC --><a href="{topicrow.U_NEWEST_POST}">{NEWEST_POST_IMG}</a> <!-- ENDIF -->{topicrow.ATTACH_ICON_IMG} <a href="{topicrow.U_VIEW_TOPIC}">{topicrow.TOPIC_TITLE}</a></p>]]></find>
+				<inline-edit>
+					<inline-find><![CDATA[topicrow.U_VIEW_TOPIC}">{topicrow.TOPIC_TITLE}</a>]]></inline-find>
+					<inline-action type="after-add"><![CDATA[<!-- IF topicrow.SOLVED_TOPIC -->&nbsp;&nbsp;<a href="{topicrow.U_SOLVED_TOPIC}" class="topictitle"{topicrow.SOLVED_STYLE}>{topicrow.SOLVED_TOPIC}</a><!-- ENDIF -->]]></inline-action>
+				</inline-edit>
+			</edit>
+		</open>
+		<diy-instructions lang="en-gb">Go to ACP > Styles .. Themes .. prosilver and select Refresh.
+Go to ACP > Styles .. Imagesets .. prosilver and select Refresh.
+And then go to ACP > General and "Purge the cache".
+If you don't see the changes in your forum, purge your browser-cache and then click the refresh-button.
+Remember to edit the forum or forums' options you wish to apply the solved topics to.
+		</diy-instructions>
+	</action-group>
+</mod>

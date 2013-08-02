@@ -1,0 +1,103 @@
+<!-- IF S_KEYWORD_VERSION -->
+<!--
+/**
+ *
+ * @author Erik Frèrejean
+ *
+ * @package Subject Prefix
+ * @copyright (c) 2010 Erik Frèrejean ( erikfrerejean@phpbb.com ) http://www.erikfrerejean.nl
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ *
+ */
+//-->
+<!-- ENDIF -->
+
+<!-- INCLUDE overall_header.html -->
+<script type="text/javascript">
+// <![CTYPE[
+// A way to pass template vars into the js
+var U_SUBJECT_PREFIX_AJAX_REQUEST = "{U_SUBJECT_PREFIX_AJAX_REQUEST}";
+// ]]>
+</script>
+
+<script type="text/javascript" src="style/subject_prefix.js"></script>
+
+<!-- IF S_EDIT -->
+    <h1>{L_ACP_SUBJECT_PREFIX_ADD}</h1>
+    <p>{L_ACP_SUBJECT_PREFIX_ADD_EXPLAIN}</p>
+
+    <form id="acp_subject_prefix" method="post" action="{U_ACTION}">
+    <fieldset>
+	<legend>{L_SUBJECT_PREFIX_ADD_EDIT}</legend>
+
+	<dl>
+	    <dt><label for="prefix_title">{L_PREFIX_TITLE}:</label></dt>
+	    <dd><input name="prefix_title" type="text" id="prefix_title" value="{TITLE}" maxlength="255" /></dd>
+	</dl>
+	<dl>
+	    <dt><label for="prefix_colour">{L_PREFIX_COLOUR}:</label><br /><span>{L_PREFIX_COLOUR_EXPLAIN}</span></dt>
+	    <dd>#<input name="prefix_colour" type="text" id="prefix_colour" value="<!-- IF COLOUR == '' -->000000<!-- ELSE -->{COLOUR}<!-- ENDIF -->" size="6" maxlength="6" />&nbsp;<span id="prefixColourPreview" style="background-color: #{COLOUR};<!-- IF COLOUR == '' --> display: none;<!-- ENDIF -->">&nbsp; &nbsp;</span>&nbsp;&nbsp;<span>[ <a href="{U_SWATCH}" onclick="popup(this.href, 636, 150, '_swatch'); return false">{L_COLOUR_SWATCH}</a> ]</span></dd>
+	</dl>
+    <dl>
+	    <dt><label for="prefix_colour">{L_PREFIX_BGCOLOUR}:</label><br /><span>{L_PREFIX_BGCOLOUR_EXPLAIN}</span></dt>
+	    <dd>#<input name="prefix_bgcolour" type="text" id="prefix_bgcolour" value="<!-- IF BGCOLOUR == '' -->000000<!-- ELSE -->{BGCOLOUR}<!-- ENDIF -->" size="6" maxlength="6" />&nbsp;<span id="prefixBgColourPreview" style="background-color: #{BGCOLOUR};<!-- IF BGCOLOUR == '' --> display: none;<!-- ENDIF -->">&nbsp; &nbsp;</span>&nbsp;&nbsp;<span>[ <a href="{U_BGSWATCH}" onclick="popup(this.href, 636, 150, '_swatch'); return false">{L_COLOUR_SWATCH}</a> ]</span></dd>
+	</dl>
+	<dl>
+	    <dt><label for="prefix_forums">{L_PREFIX_FORUMS}:</label><br /><span>{L_PREFIX_FORUMS_EXPLAIN}</span></dt>
+	    <dd><select id="prefix_forums" name="prefix_forums_id[]" multiple="multiple" size="10">{PREFIX_FORUMS_OPTIONS}</select></dd>
+	</dl>
+
+	<p class="submit-buttons">
+	    <input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />&nbsp;
+	    <input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+	    {S_FORM_TOKEN}
+	</p>
+    </form>
+<!-- ELSE -->
+    <h1>{L_ACP_SUBJECT_PREFIX}</h1>
+    <p><!-- IF .forumrow -->{L_ACP_SUBJECT_PREFIX_EXPLAIN}<!-- ELSE -->{L_NO_PREFIXES}<!-- ENDIF --></p>
+
+    <div class="successbox" style="display: none;">
+	<h3>{L_INFORMATION}</h3>
+	<p>{L_PREFIX_ORDER_UPDATED}</p>
+    </div>
+
+    <!-- BEGIN forumrow -->
+	<table cellspacing="1" id="prefixrowbody{forumrow.FORUM_ID}">
+	    <thead>
+		<tr class="nodrag">
+		    <th>{forumrow.FORUMNAME}</th>
+		    <th>{L_OPTIONS}</th>
+		</tr>
+	    </thead>
+	    <tbody class="prefixrowbody">
+		<!-- BEGIN prefixrow -->
+		<tr id="pf-{prefixrow.PREFIX_ID}_{forumrow.FORUM_ID}" class="<!-- IF prefixrow.S_ROW_COUNT is odd -->row2<!-- ELSE -->row1<!-- ENDIF --><!-- IF prefixrow.S_FIRST_ROW && prefixrow.S_LAST_ROW --> nodrag<!-- ENDIF -->">
+		    <td style="font-size: 20px; font-family: \"Trebuchet MS\", Arial, Helvetica, sans-serif;">{prefixrow.PREFIX_FULL}</td>
+		    <td style="width: 80px; text-align: right; white-space: nowrap">
+			<span class="moveButtons">
+			<!-- IF prefixrow.S_FIRST_ROW && not prefixrow.S_LAST_ROW -->
+			    {ICON_MOVE_UP_DISABLED}
+			    <a href="{prefixrow.U_MOVE_DOWN}">{ICON_MOVE_DOWN}</a>
+			<!-- ELSEIF not prefixrow.S_FIRST_ROW && not prefixrow.S_LAST_ROW -->
+			    <a href="{prefixrow.U_MOVE_UP}">{ICON_MOVE_UP}</a>
+			    <a href="{prefixrow.U_MOVE_DOWN}">{ICON_MOVE_DOWN}</a>
+			<!-- ELSEIF not prefixrow.S_FIRST_ROW && prefixrow.S_LAST_ROW -->
+			    <a href="{prefixrow.U_MOVE_UP}">{ICON_MOVE_UP}</a>
+			    {ICON_MOVE_DOWN_DISABLED}
+			<!-- ELSE -->
+			    {ICON_MOVE_UP_DISABLED}
+			    {ICON_MOVE_DOWN_DISABLED}
+			<!-- ENDIF -->
+			</span>
+			<!-- IF prefixrow.U_EDIT --><a href="{prefixrow.U_EDIT}">{ICON_EDIT}</a><!-- ENDIF -->
+			<!-- IF prefixrow.U_DELETE --><a href="{prefixrow.U_DELETE}" class="delete-prefix">{ICON_DELETE}</a><!-- ENDIF -->
+		    </td>
+		</tr>
+		<!-- END prefixrow -->
+	    </tbody>
+	</table>
+    <!-- END forumrow -->
+<!-- ENDIF -->
+
+<!-- INCLUDE overall_footer.html -->

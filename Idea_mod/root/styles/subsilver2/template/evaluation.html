@@ -1,0 +1,35 @@
+<script type="text/javascript">
+	var clicked = false;
+
+	function eval_mouse_over(value, over)
+	{
+		for(var i = 1; i <= {EVALUATION_STARS}; i++)
+		{
+			var img = document.getElementsByName("evaluate" + i);
+
+			for(var j = 0; j < img.length; j++)
+			{
+				if(((over) && (i <= value)) || ((!over) && (i <= {EVALUATION_RESULT_FLOOR})))
+				{
+					img[j].src = "{EVALUATION_IMG_LIGHT}";
+				}
+				else if((!over) && (i <= {EVALUATION_RESULT_CEIL}) && ({EVALUATION_RESULT_FLOOR} + 0.4 <= {EVALUATION_RESULT}))
+				{
+					img[j].src = "{EVALUATION_IMG_HALF}";
+				}
+				else
+				{
+					img[j].src = "{EVALUATION_IMG_DARK}";
+				}
+			}
+		}
+	}
+	function eval_mouse_click(value)
+	{
+		if(!clicked)
+		{
+			clicked = true;
+			window.location.href = "{EVALUATION_LINK}&evaluation=" + value;
+		}
+	}
+</script>

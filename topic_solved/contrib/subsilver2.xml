@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml-stylesheet type="text/xsl" href="./xsl/modx.prosilver.en.xsl"?>
+<!--
+	NOTICE: Please open this file in your web browser. If presented with a security warning, you may safely tell it to allow the blocked content.
+-->
+<!--For security purposes, please check: http://www.phpbb.com/mods/ for the latest version of this MOD. Although MODs are checked before being allowed in the MODs Database there is no guarantee that there are no security problems within the MOD. No support will be given for MODs not found within the MODs Database which can be found at http://www.phpbb.com/mods/-->
+<mod xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.phpbb.com/mods/xml/modx-1.2.3.xsd">
+	<header>
+		<license>http://opensource.org/licenses/gpl-license.php GNU General Public License v2</license>
+		<title lang="en-gb">Topic solved</title>
+		<description lang="en-gb">These instructions apply changes to the subsilver2 style</description>
+		<author-notes lang="en-gb">These instructions apply changes to the subsilver2 style</author-notes>
+		<author-group>
+			<author>
+				<realname>Jari Kanerva</realname>
+				<email>tumba25@gmail.com</email>
+				<username>tumba25</username>
+				<homepage>http://skripter.se</homepage>
+			</author>
+		</author-group>
+		<mod-version>1.4.4</mod-version>
+		<installation>
+			<level>easy</level>
+			<time>240</time>
+			<target-version>3.0.6</target-version>
+		</installation>
+		<link-group>
+			<link type="parent" lang="en" href="../install.xml">Main install file</link>
+		</link-group>
+	</header>
+	<action-group>
+		<copy>
+			<file from="root/styles/subsilver2/imageset/*.*" to="styles/subsilver2/imageset/*.*" />
+		</copy>
+		<open src="styles/subsilver2/imageset/imageset.cfg">
+			<edit>
+				<find><![CDATA[img_icon_topic_unapproved = icon_topic_unapproved.gif*18*19]]></find>
+				<action type="after-add"><![CDATA[img_icon_topic_solved_set = icon_topic_solved_set.png*20*20
+img_icon_topic_solved_unset = icon_topic_solved_unset.png*20*20
+img_icon_topic_solved_head = icon_topic_solved_head.png*20*20
+img_icon_topic_solved_list = icon_topic_solved_list.png*12*12
+img_icon_topic_solved_post = icon_topic_solved_post.png*12*12]]></action>
+			</edit>
+		</open>
+		<open src="styles/subsilver2/template/overall_header.html">
+			<edit>
+				<find><![CDATA[<p class="searchbar">]]></find>
+				<inline-edit>
+					<inline-find><![CDATA[class="searchbar"]]></inline-find>
+					<inline-action type="after-add"><![CDATA[ style="line-height:1.3"]]></inline-action>
+				</inline-edit>
+			</edit>
+			<edit>
+				<find><![CDATA[<span style="float: {S_CONTENT_FLOW_BEGIN};"><a href="{U_SEARCH_UNANSWERED}">{L_SEARCH_UNANSWERED}</a> | <a href="{U_SEARCH_ACTIVE_TOPICS}">{L_SEARCH_ACTIVE_TOPICS}</a></span>]]></find>
+				<inline-edit>
+					<inline-find><![CDATA[style="float: {S_CONTENT_FLOW_BEGIN};">]]></inline-find>
+					<inline-action type="after-add"><![CDATA[<a href="{U_SEARCH_UNSOLVED_TOPICS}">{L_SEARCH_UNSOLVED}</a><br />]]></inline-action>
+				</inline-edit>
+			</edit>
+			<edit>
+				<find><![CDATA[<span style="float: {S_CONTENT_FLOW_END};"><a href="{U_SEARCH_UNREAD}">{L_SEARCH_UNREAD}</a> | <a href="{U_SEARCH_NEW}">{L_SEARCH_NEW}</a> | <a href="{U_SEARCH_SELF}">{L_SEARCH_SELF}</a></span>]]></find>
+				<inline-edit>
+					<inline-find><![CDATA[style="float: {S_CONTENT_FLOW_END};">]]></inline-find>
+					<inline-action type="after-add"><![CDATA[<a href="{U_SEARCH_YOUR_UNSOLVED_TOPICS}">{L_SEARCH_YOUR_UNSOLVED}</a><br />]]></inline-action>
+				</inline-edit>
+			</edit>
+		</open>
+		<open src="styles/subsilver2/template/mcp_forum.html">
+			<edit>
+				<find><![CDATA[<p class="topictitle">{NEWEST_POST_IMG} {topicrow.ATTACH_ICON_IMG} <a href="{topicrow.U_VIEW_TOPIC}">{topicrow.TOPIC_TITLE}</a>]]></find>
+				<inline-edit>
+					<inline-find><![CDATA[topicrow.U_VIEW_TOPIC}">{topicrow.TOPIC_TITLE}</a>]]></inline-find>
+					<inline-action type="after-add"><![CDATA[<!-- IF topicrow.SOLVED_TOPIC -->&nbsp;&nbsp;<a href="{topicrow.U_SOLVED_TOPIC}" class="topictitle"{topicrow.SOLVED_STYLE}>{topicrow.SOLVED_TOPIC}</a><!-- ENDIF -->]]></inline-action>
+				</inline-edit>
+			</edit>
+		</open>
+		<open src="styles/subsilver2/template/search_body.html">
+			<edit>
+				<find><![CDATA[<td class="row1" width="25%" nowrap="nowrap"><b class="genmed">{L_SEARCH_SUBFORUMS}: </b></td>]]></find>
+				<inline-edit>
+					<inline-find><![CDATA[nowrap="nowrap">]]></inline-find>
+					<inline-action type="after-add"><![CDATA[<b class="genmed"><label for="search_solv1">{L_SEARCH_SOLVED}: </label></b><br /><br />]]></inline-action>
+				</inline-edit>
+			</edit>
+			<edit>
+				<find><![CDATA[<td class="row2" width="25%" nowrap="nowrap"><input type="radio" class="radio" name="sc" value="1" checked="checked" /> <span class="genmed">{L_YES}</span>&nbsp;&nbsp;<input type="radio" class="radio" name="sc" value="0" /> <span class="genmed">{L_NO}</span></td>]]></find>
+				<inline-edit>
+					<inline-find><![CDATA[nowrap="nowrap">]]></inline-find>
+					<inline-action type="after-add"><![CDATA[<label for="search_solv1"><input type="radio" name="sv" id="search_solv1" value="1" /> <span class="genmed">{L_YES}</span></label>&nbsp;&nbsp;<label for="search_solv2"><input type="radio" name="sv" id="search_solv2" value="0" checked="checked" /> <span class="genmed">{L_NO}</span></label><br /><br />]]></inline-action>
+				</inline-edit>
+			</edit>
+		</open>
+		<open src="styles/subsilver2/template/search_results.html">
+			<edit>
+				<find><![CDATA[{searchresults.ATTACH_ICON_IMG} <a href="{searchresults.U_VIEW_TOPIC}" class="topictitle">{searchresults.TOPIC_TITLE}</a>]]></find>
+				<action type="after-add"><![CDATA[				{searchresults.SOLVED_LINK}]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[&nbsp;<b>{L_POST_SUBJECT}:</b> <a href="{searchresults.U_VIEW_POST}">{searchresults.POST_SUBJECT}</a>]]></find>
+				<inline-edit>
+					<inline-find><![CDATA[{searchresults.POST_SUBJECT}]]></inline-find>
+					<inline-action type="after-add"><![CDATA[{searchresults.SOLVED_LINK}]]></inline-action>
+				</inline-edit>
+			</edit>
+		</open>
+		<open src="styles/subsilver2/template/ucp_main_bookmarks.html">
+			<edit>
+				<find><![CDATA[<p class="topictitle"><!-- IF topicrow.S_UNREAD_TOPIC --><a href="{topicrow.U_NEWEST_POST}">{NEWEST_POST_IMG}</a> <!-- ENDIF -->{topicrow.ATTACH_ICON_IMG} <a href="{topicrow.U_VIEW_TOPIC}">{topicrow.TOPIC_TITLE}</a></p>]]></find>
+				<inline-edit>
+					<inline-find><![CDATA[topicrow.U_VIEW_TOPIC}">{topicrow.TOPIC_TITLE}</a>]]></inline-find>
+					<inline-action type="after-add"><![CDATA[<!-- IF topicrow.SOLVED_TOPIC -->&nbsp;&nbsp;<a href="{topicrow.U_SOLVED_TOPIC}" class="topictitle"{topicrow.SOLVED_STYLE}>{topicrow.SOLVED_TOPIC}</a><!-- ENDIF -->]]></inline-action>
+				</inline-edit>
+			</edit>
+		</open>
+		<open src="styles/subsilver2/template/ucp_main_subscribed.html">
+			<edit>
+				<find><![CDATA[<p class="topictitle"><!-- IF topicrow.S_UNREAD_TOPIC --><a href="{topicrow.U_NEWEST_POST}">{NEWEST_POST_IMG}</a> <!-- ENDIF -->{topicrow.ATTACH_ICON_IMG} <a href="{topicrow.U_VIEW_TOPIC}">{topicrow.TOPIC_TITLE}</a></p>]]></find>
+				<inline-edit>
+					<inline-find><![CDATA[topicrow.U_VIEW_TOPIC}">{topicrow.TOPIC_TITLE}</a>]]></inline-find>
+					<inline-action type="after-add"><![CDATA[<!-- IF topicrow.SOLVED_TOPIC -->&nbsp;&nbsp;<a href="{topicrow.U_SOLVED_TOPIC}" class="topictitle"{topicrow.SOLVED_STYLE}>{topicrow.SOLVED_TOPIC}</a><!-- ENDIF -->]]></inline-action>
+				</inline-edit>
+			</edit>
+		</open>
+		<open src="styles/subsilver2/template/viewforum_body.html">
+			<edit>
+				<find><![CDATA[{topicrow.ATTACH_ICON_IMG} <!-- IF topicrow.S_HAS_POLL or topicrow.S_TOPIC_MOVED --><b>{topicrow.TOPIC_TYPE}</b> <!-- ENDIF --><a title="{L_POSTED}: {topicrow.FIRST_POST_TIME}" href="{topicrow.U_VIEW_TOPIC}" class="topictitle">{topicrow.TOPIC_TITLE}</a>]]></find>
+				<action type="after-add"><![CDATA[					<!-- IF topicrow.SOLVED_TOPIC -->&nbsp;&nbsp;<a href="{topicrow.U_SOLVED_TOPIC}" class="topictitle"{topicrow.SOLVED_STYLE}>{topicrow.SOLVED_TOPIC}</a><!-- ENDIF -->]]></action>
+			</edit>
+		</open>
+		<open src="styles/subsilver2/template/viewtopic_body.html">
+			<edit>
+				<find><![CDATA[<h2><a class="titles" href="{U_VIEW_TOPIC}">{TOPIC_TITLE}</a></h2>]]></find>
+				<inline-edit>
+					<inline-find><![CDATA[{TOPIC_TITLE}</a>]]></inline-find>
+					<inline-action type="after-add"><![CDATA[{TOPIC_SOLVED_TITLE}]]></inline-action>
+				</inline-edit>
+			</edit>
+			<edit>
+				<find><![CDATA[<!-- IF postrow.U_REPORT --><a href="{postrow.U_REPORT}">{REPORT_IMG}</a> <!-- ENDIF -->]]></find>
+				<action type="after-add"><![CDATA[								<!-- IF postrow.U_SET_SOLVED --><a href="{postrow.U_SET_SOLVED}"><!-- IF postrow.S_TOPIC_SOLVED -->{SOLVED_UNSET_IMG}<!-- ELSE -->{SOLVED_SET_IMG}<!-- ENDIF --></a><!-- ENDIF -->]]></action>
+			</edit>
+		</open>
+		<diy-instructions lang="en-gb">Go to ACP > Styles .. Themes .. subsilver2 and select Refresh.
+Go to ACP > Styles .. Imagesets .. subsilver2 and select Refresh.
+And then go to ACP > General and "Purge the cache".
+If you don't see the changes in your forum, purge your browser-cache and then click the refresh-button.
+Remember to edit the forum or forums' options you wish to apply the solved topics to.</diy-instructions>
+	</action-group>
+</mod>

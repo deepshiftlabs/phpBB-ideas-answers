@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml-stylesheet type="text/xsl" href="modx.prosilver.en.xsl"?>
+<!--NOTICE: Please open this file in your web browser. If presented with a security warning, you may safely tell it to allow the blocked content.-->
+<!--For security purposes, please check: http://www.phpbb.com/mods/ for the latest version of this MOD.\nAlthough MODs are checked before being allowed in the MODs Database there is no guarantee that there are no security problems within the MOD.\nNo support will be given for MODs not found within the MODs Database which can be found at http://www.phpbb.com/mods/-->
+<mod xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.phpbb.com/mods/xml/modx-1.2.5.xsd">
+	<header>
+		<meta name="generator" content="MODX file generated with PP MODX Creator by tumba25 (online version)"/>
+		<meta name="generator" content="Phpbb.ModTeam.Tools (c#)"/>
+		<license><![CDATA[http://opensource.org/licenses/gpl-license.php GNU General Public License v2]]></license>
+		<title lang="en"><![CDATA[Ideas]]></title>
+		<description lang="en"><![CDATA[Topics can be rated and the average will be shown on the viewforum, viewtopic and searchresults. Also this MOD allows users to easily give topics a subject prefix. This may be through a dropdown menu, radio boxes, a custom text input field, etc where a user can select the appropriate option and have it appended to the front of the topic title. ]]></description>
+		<author-notes lang="en"><![CDATA[This mod is a compilation of two mods: 
+- "Topic Evaluation" (https://www.phpbb.com/customise/db/mod/topic_evaluation)
+- "Subject Prefix" (https://www.phpbb.com/community/viewtopic.php?f=70&t=2091731). 
+
+So all notes from them are also apllied to this mode, please read the relevant documentation.]]></author-notes>
+		<author-group>
+			<author>
+				<realname><![CDATA[Alexander Savchenko]]></realname>
+				<username><![CDATA[-]]></username>
+				<homepage><![CDATA[http://www.deepshiftlabs.com]]></homepage>
+				<email><![CDATA[saval@deepshiftlabs.com]]></email>
+			</author>
+		</author-group>
+		<mod-version>1.0.0</mod-version>
+		<installation>
+			<level>intermediate</level>
+			<time>1380</time>
+			<target-version>3.0.11</target-version>
+		</installation>
+		<history>
+			<entry>
+				<date>2011-01-01</date>
+				<rev-version>1.0.0</rev-version>
+				<changelog lang="en">
+					<change><![CDATA[First stable release.]]></change>
+				</changelog>
+			</entry>
+		</history>
+		<link-group>
+			<link type="language" href="xml/ar.xml" lang="en">Arabic Language Pack</link>
+			<link type="language" href="xml/de.xml" lang="en">German Language Pack</link>
+			<link type="language" href="xml/es.xml" lang="en">Español Language Pack</link>
+			<link type="language" href="xml/nl.xml" lang="en">Dutch Language Pack</link>
+			<link type="template" href="xml/subsilver2.xml" lang="en">Subsilver2</link>
+		</link-group>
+	</header>
+	<action-group>
+		<copy>
+			<file from="root/adm/style/acp_subject_prefix.html" to="adm/style/acp_subject_prefix.html"/>
+			<file from="root/adm/style/subject_prefix.js" to="adm/style/subject_prefix.js"/>
+            <file from="root/includes/acp/info/acp_subject_prefix.php" to="includes/acp/info/acp_subject_prefix.php"/>
+			<file from="root/includes/acp/acp_subject_prefix.php" to="includes/acp/acp_subject_prefix.php"/>
+            <file from="root/includes/hooks/hook_subject_prefix.php" to="includes/hooks/hook_subject_prefix.php"/>
+            <file from="root/includes/mcp/info/mcp_subject_prefix.php" to="includes/mcp/info/mcp_subject_prefix.php"/>
+			<file from="root/includes/mcp/mcp_subject_prefix.php" to="includes/mcp/mcp_subject_prefix.php"/>
+            <file from="root/includes/mods/ideas/acp_forums.php" to="includes/mods/ideas/acp_forums.php"/>
+            <file from="root/includes/mods/ideas/search.php" to="includes/mods/ideas/search.php"/>
+            <file from="root/includes/mods/ideas/sp_cache.php" to="includes/mods/ideas/sp_cache.php"/>
+            <file from="root/includes/mods/ideas/sp_core.php" to="includes/mods/ideas/sp_core.php"/>
+            <file from="root/includes/mods/ideas/sp_phpbb.php" to="includes/mods/ideas/sp_phpbb.php"/>
+            <file from="root/includes/mods/ideas/viewforum.php" to="includes/mods/ideas/viewforum.php"/>
+            <file from="root/includes/mods/ideas/viewtopic.php" to="includes/mods/ideas/viewtopic.php"/>
+			<file from="root/install/install.php" to="install/install.php"/>
+			<file from="root/install/install_data.php" to="install/install_data.php"/>
+			<file from="root/language/en/acp/permissions_evaluation.php" to="language/en/acp/permissions_evaluation.php"/>
+            <file from="root/language/en/mods/ideas/permissions_subject_prefix.php" to="language/en/mods/ideas/permissions_subject_prefix.php"/>
+            <file from="root/language/en/mods/ideas/subject_prefix_common.php" to="language/en/mods/ideas/subject_prefix_common.php"/>
+			<file from="root/language/en/mods/evaluation.php" to="language/en/mods/evaluation.php"/>
+            <file from="root/styles/prosilver/imageset/ideas_read.gif" to="styles/prosilver/imageset/ideas_read.gif"/>
+            <file from="root/styles/prosilver/imageset/ideas_unread.gif" to="styles/prosilver/imageset/ideas_unread.gif"/>
+            <file from="root/styles/prosilver/template/mods/ideas/subject_prefix.html" to="styles/prosilver/template/mods/ideas/subject_prefix.html"/>
+			<file from="root/styles/prosilver/template/evaluation.html" to="styles/prosilver/template/evaluation.html"/>
+			<file from="root/styles/prosilver/theme/images/arrow_sprite.png" to="styles/prosilver/theme/images/arrow_sprite.png"/>
+            <file from="root/styles/prosilver/theme/evaluation.css" to="styles/prosilver/theme/evaluation.css"/>
+            <file from="root/umil/*.*" to="/umil/*.*"/>
+			<file from="root/sp_ajax.php" to="/sp_ajax.php"/>
+		</copy>
+		<open src="search.php">
+			<edit>
+				<find><![CDATA[include($phpbb_root_path . 'common.' . $phpEx);]]></find>
+				<action type="after-add"><![CDATA[/* Ideas changes */
+include($phpbb_root_path . 'includes/mods/ideas/search.' . $phpEx);
+/* End of Ideas changes */]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[$sql .= ' ORDER BY ' . $sort_by_sql[$sort_key] . ' ' . (($sort_dir == 'd') ? 'DESC' : 'ASC');]]></find>
+				<action type="after-add"><![CDATA[/* Ideas changes */
+evaluation_extend_sql($sql, $show_results);
+/* End of Ideas changes */]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[$template->assign_block_vars('searchresults', array_merge($tpl_ary, array(]]></find>
+				<action type="before-add"><![CDATA[/* Ideas changes */
+evaluation_extend_template($tpl_ary, $row);
+/* End of Ideas changes */]]></action>
+			</edit>
+		</open>
+		<open src="viewforum.php">
+			<edit>
+				<find><![CDATA[include($phpbb_root_path . 'includes/functions_display.' . $phpEx);]]></find>
+				<action type="after-add"><![CDATA[/* Ideas changes */
+include($phpbb_root_path . 'includes/mods/ideas/viewforum.' . $phpEx);
+/* End of Ideas changes */]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[$sql_approved = ($auth->acl_get('m_approve', $forum_id)) ? '' : 'AND t.topic_approved = 1';]]></find>
+				<action type="before-add"><![CDATA[/* Ideas changes */
+evaluation_extend_sql();
+/* End of Ideas changes */]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA['LEFT_JOIN'	=> $sql_array['LEFT_JOIN'],]]></find>
+				<action type="after-add"><![CDATA[/* Ideas changes */
+'GROUP_BY'  => evaluation_extend_sql_group(),
+/* End of Ideas changes */]]></action>
+			</edit>
+            <edit>
+                <find><![CDATA[if ($forum_data['forum_type'] == FORUM_POST || !sizeof($active_forum_ary))]]></find>
+                <action type="before-add"><![CDATA[/* Ideas changes */
+evaluation_extend_sql_orderby();
+/* End of Ideas changes */]]></action>
+            </edit>
+            <edit>
+                <find><![CDATA[// Grab just the sorted topic ids]]></find>
+                <action type="after-add"><![CDATA[/* Ideas changes */
+if(1 == $forum_data['forum_evaluation'])
+{
+    $sql = evaluation_prepare_viewforum_topics_sql();
+}
+else
+{
+/* End of Ideas changes */]]></action>
+            </edit>
+            <edit>
+				<find><![CDATA[$result = $db->sql_query_limit($sql, $sql_limit, $sql_start);]]></find>
+                <action type="before-add"><![CDATA[/* Ideas changes */
+}
+/* End of Ideas changes */]]></action>
+            </edit>
+			<edit>
+				<find><![CDATA['LEFT_JOIN'		=> $sql_array['LEFT_JOIN'],]]></find>
+				<action type="after-add"><![CDATA[/* Ideas changes */
+'GROUP_BY'		=> evaluation_extend_sql_group(),
+/* End of Ideas changes */]]></action>
+			</edit>
+            <edit>
+				<find><![CDATA[$template->assign_block_vars('topicrow', array(]]></find>
+                <action type="before-add"><![CDATA[/* Ideas changes */
+$evaluate_data = evaluation_get_topic_data();
+/* End of Ideas changes */]]></action>
+            </edit>
+			<edit>
+				<find><![CDATA['LAST_POST_AUTHOR_FULL'		=> get_username_string('full', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),]]></find>
+				<action type="after-add"><![CDATA[/* Ideas changes */
+'EVALUATION_TITLE'			=> $evaluate_data['EVALUATION_TITLE'],
+'EVALUATION_CNT'            => $evaluate_data['EVALUATION_CNT'],
+'EVALUATION_RATE_LNG'       => $evaluate_data['EVALUATION_RATE_LNG'],
+/* End of Ideas changes */]]></action>
+			</edit>
+		</open>
+		<open src="viewtopic.php">
+			<edit>
+				<find><![CDATA[include($phpbb_root_path . 'includes/bbcode.' . $phpEx);]]></find>
+				<action type="after-add"><![CDATA[/* Ideas changes */
+include($phpbb_root_path . 'includes/mods/ideas/viewtopic.' . $phpEx);
+/* End of Ideas changes */]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[// Redirect to login or to the correct post upon emailed notification links]]></find>
+				<action type="before-add"><![CDATA[/* Ideas changes */
+evaluation_display();
+/* End of Ideas changes */]]></action>
+			</edit>
+		</open>
+		<open src="adm/style/acp_forums.html">
+			<edit>
+				<find><![CDATA[<dl>
+	<dt><label for="topics_per_page">{L_FORUM_TOPICS_PAGE}:</label><br /><span>{L_FORUM_TOPICS_PAGE_EXPLAIN}</span></dt>
+	<dd><input type="text" id="topics_per_page" name="topics_per_page" value="{TOPICS_PER_PAGE}" size="4" maxlength="4" /></dd>
+</dl>]]></find>
+				<action type="after-add"><![CDATA[<dl>
+            <dt><label for="evaluation">{L_ACP_EVALUATION}:</label><br /><span>{L_ACP_EVALUATION_EXPLAIN}</span></dt>
+            <dd><label><input type="radio" class="radio" name="evaluation" value="1"<!-- IF S_EVALUATION_ACTIVATED --> id="enable_evaluation" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
+                <label><input type="radio" class="radio" name="evaluation" value="0"<!-- IF not S_EVALUATION_ACTIVATED --> id="enable_evaluation" checked="checked"<!-- ENDIF --> /> {L_NO}</label></dd>
+        </dl>]]></action>
+			</edit>
+		</open>
+		<open src="includes/constants.php">
+			<edit>
+				<find><![CDATA[// Additional constants]]></find>
+				<action type="after-add"><![CDATA[/* Ideas changes */
+define('TOPICS_EVALUATION_POS_VOICE_WEIGHT', 10);
+define('TOPICS_EVALUATION_NEG_VOICE_WEIGHT', 15);
+/* End of Ideas changes */]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[// Additional tables]]></find>
+				<action type="after-add"><![CDATA[/* Ideas changes */
+define('TOPICS_EVALUATION_TABLE', $table_prefix . 'topics_evaluation');
+/* End of Ideas changes */]]></action>
+			</edit>
+		</open>
+        <open src="includes/functions_display.php">
+			<edit>
+				<find><![CDATA[// Create last post link information, if appropriate]]></find>
+				<action type="before-add"><![CDATA[/* Ideas changes */
+if($row['forum_evaluation']) {
+    if(preg_match('/forum_unread/', $folder_image)) {
+        $folder_image = 'ideas_unread';
+    } else {
+        $folder_image = 'ideas_read';
+    }
+}
+/* End of Ideas changes */]]></action>
+			</edit>
+		</open>
+        <open src="includes/acp/acp_styles.php">
+            <edit>
+				<find><![CDATA['forum_link', 'forum_read', 'forum_read_locked']]></find>
+				<inline-edit>
+					<inline-find><![CDATA['forum_link']]></inline-find>
+					<inline-action type="before-add"><![CDATA['ideas_read', 'ideas_unread', ]]></inline-action>
+				</inline-edit>
+			</edit>
+		</open>
+		<open src="includes/acp/acp_forums.php">
+			<edit>
+				<find><![CDATA[if (!defined('IN_PHPBB'))
+{
+	exit;
+}]]></find>
+				<action type="after-add"><![CDATA[/* Ideas changes */
+include($phpbb_root_path . 'includes/mods/ideas/acp_forums.' . $phpEx);
+/* End of Ideas changes */]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[$errors = $this->update_forum_data($forum_data);]]></find>
+				<action type="before-add"><![CDATA[/* Ideas changes */
+evaluation_request_data($forum_data, true);
+/* End of Ideas changes */]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[	'forum_password_confirm'=> '',
+);]]></find>
+				<action type="after-add"><![CDATA[/* Ideas changes */
+evaluation_request_data($forum_data, false);
+/* End of Ideas changes */]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[if (strlen($forum_data['forum_password']) == 32)
+{
+	$errors[] = $user->lang['FORUM_PASSWORD_OLD'];
+}]]></find>
+				<action type="after-add"><![CDATA[/* Ideas changes */
+evaluation_extend_template($forum_data);
+/* End of Ideas changes */]]></action>
+			</edit>
+		</open>
+		<open src="styles/prosilver/template/search_results.html">
+			<edit>
+				<find><![CDATA[<dl class="icon" style="background-image: url({searchresults.TOPIC_FOLDER_IMG_SRC}); background-repeat: no-repeat;">]]></find>
+				<action type="replace-with"><![CDATA[<dl class="icon" <!-- IF not searchresults.EVALUATION_TITLE --> style="background-image: url({searchresults.TOPIC_FOLDER_IMG_SRC}); background-repeat: no-repeat;"<!-- ENDIF -->>
+<!-- IF searchresults.EVALUATION_TITLE --> 
+<div style="float: left; height: 40px; margin-left: 2px; min-width: 33px; background-color: #905417; -moz-border-radius: 3px 3px 3px 3px;">
+        <span class="eval_rate_small" style="-moz-border-radius: 3px 3px 3px 3px; background-color: #6C3F11; color: #CCCCCC; padding: 3px 0 2px; text-align: center;">{searchresults.EVALUATION_RATE_LNG}</span>
+        <span title="{searchresults.EVALUATION_TITLE}" style="font-size: 12px; padding: 2px 2px 0 0; color: #FFFFFF; text-align: center; display: block;">{searchresults.EVALUATION_CNT}</span>
+    </div><!-- ENDIF -->]]></action>
+			</edit>
+            <edit>
+				<find><![CDATA[<dt <!-- IF searchresults.TOPIC_ICON_IMG -->style="background-image: url({T_ICONS_PATH}{searchresults.TOPIC_ICON_IMG}); background-repeat: no-repeat;"<!-- ENDIF -->>]]></find>
+				<inline-edit>
+					<inline-find><![CDATA[<dt ]]></inline-find>
+					<inline-action type="after-add"><![CDATA[<!-- IF searchresults.EVALUATION_TITLE --> class="eval" <!-- ENDIF -->]]></inline-action>
+				</inline-edit>
+			</edit>
+            <edit>
+				<find><![CDATA[<dd>{L_REPLIES}: <strong>{searchresults.TOPIC_REPLIES}</strong></dd>]]></find>
+                <action type="before-add"><![CDATA[<!-- IF searchresults.EVALUATION_RATE_LNG -->
+	<dd>{searchresults.EVALUATION_RATE_LNG}: {searchresults.EVALUATION_CNT}</dd>
+<!-- ENDIF -->]]></action>
+            </edit>
+		</open>
+		<open src="styles/prosilver/template/viewforum_body.html">
+			<edit>
+				<find><![CDATA[<dl class="icon" style="background-image: url({topicrow.TOPIC_FOLDER_IMG_SRC}); background-repeat: no-repeat;">]]></find>
+                <action type="replace-with"><![CDATA[<dl class="icon" <!-- IF not topicrow.EVALUATION_TITLE --> style="background-image: url({topicrow.TOPIC_FOLDER_IMG_SRC}); background-repeat: no-repeat;"<!-- ENDIF -->>
+                <!-- IF topicrow.EVALUATION_TITLE --> 
+                <div style="float: left; height: 40px; margin-left: 2px; min-width: 33px; background-color: #905417; -moz-border-radius: 3px 3px 3px 3px;">
+                    <span class="eval_rate_small" style="-moz-border-radius: 3px 3px 3px 3px; background-color: #6C3F11; color: #CCCCCC; padding: 3px 0 2px; text-align: center;">{topicrow.EVALUATION_RATE_LNG}</span>
+                    <span title="{topicrow.EVALUATION_TITLE}" style="font-size: 12px; padding: 2px 2px 0 0; color: #FFFFFF; text-align: center; display: block;">{topicrow.EVALUATION_CNT}</span>
+                </div>
+                <!-- ENDIF -->]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[<dt<!-- IF topicrow.TOPIC_ICON_IMG and S_TOPIC_ICONS --> style="background-image: url({T_ICONS_PATH}{topicrow.TOPIC_ICON_IMG}); background-repeat: no-repeat;"<!-- ENDIF --> title="{topicrow.TOPIC_FOLDER_IMG_ALT}"><!-- IF topicrow.S_UNREAD_TOPIC --><a href="{topicrow.U_NEWEST_POST}">{NEWEST_POST_IMG}</a> <!-- ENDIF --><a href="{topicrow.U_VIEW_TOPIC}" class="topictitle">{topicrow.TOPIC_TITLE}</a>]]></find>
+				<inline-edit>
+					<inline-find><![CDATA[title="{topicrow.TOPIC_FOLDER_IMG_ALT}">]]></inline-find>
+					<inline-action type="before-add"><![CDATA[<!-- IF topicrow.EVALUATION_TITLE --> class="eval" <!-- ENDIF --> ]]></inline-action>
+				</inline-edit>
+			</edit>
+		</open>
+		<open src="styles/prosilver/template/viewtopic_body.html">
+			<edit>
+				<find><![CDATA[<h2><a href="{U_VIEW_TOPIC}">{TOPIC_TITLE}</a></h2>]]></find>
+				<action type="before-add"><![CDATA[<!-- IF EVALUATION_HTML --><!-- INCLUDE evaluation.html --><!-- ENDIF -->]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[<div class="clear"></div>]]></find>
+				<action type="before-add"><![CDATA[<!-- IF EVALUATION_HTML --></div><!-- ENDIF -->]]></action>
+			</edit>
+            <edit>
+				<find><![CDATA[<!-- IF S_DISPLAY_ONLINE_LIST -->]]></find>
+				<action type="before-add"><![CDATA[<!-- INCLUDE mods/ideas/subject_prefix.html -->]]></action>
+			</edit>
+		</open>
+		<open src="styles/prosilver/template/posting_editor.html">
+			<edit>
+				<find><![CDATA[<!-- IF CAPTCHA_TEMPLATE and S_CONFIRM_CODE -->]]></find>
+				<action type="before-add"><![CDATA[<!-- INCLUDE mods/ideas/subject_prefix.html -->]]></action>
+			</edit>
+		</open>
+
+		<open src="styles/prosilver/theme/stylesheet.css">
+			<edit>
+				<find><![CDATA[@import url("colours.css");]]></find>
+				<action type="after-add"><![CDATA[@import url("evaluation.css");]]></action>
+			</edit>
+		</open>
+        
+        <open src="styles/prosilver/imageset/imageset.cfg">
+			<edit>
+				<find><![CDATA[img_forum_unread_subforum = forum_unread_subforum.gif*27*27]]></find>
+				<action type="after-add"><![CDATA[# Ideas changes
+img_ideas_read = ideas_read.gif*27*27
+img_ideas_unread = ideas_unread.gif*27*27
+# End of Ideas changes]]></action>
+			</edit>
+		</open>
+        <open src="language/en/acp/styles.php">
+			<edit>
+				<find><![CDATA['IMG_FORUM_UNREAD_SUBFORUM'	=> ]]></find>
+				<action type="after-add"><![CDATA[/* Ideas changes */
+'IMG_IDEAS_READ'	=> 'Ideas',
+'IMG_IDEAS_UNREAD'	=> 'New Ideas',
+/* End of Ideas changes */]]></action>
+			</edit>
+		</open>
+		<diy-instructions lang="en"><![CDATA[Further installation instructions:
+1) Open install script (install/install.php) and find '$current_imageset_id = 1;' inside. Set here your`s current imageset ID.
+2) Run the install script in the root/install directory. The file is called "install.php"
+3) After the execution of the install script delete the install directory with the files in it.
+4) Refresh in the ACP the image set ACP -> Styles -> Imagesets -> Refresh.
+5) Maybe the cache files of the templates must be deleted if the evaluation items are not visible.
+
+----------------------------------------------------------------------------------
+Instructions to uninstall the mod:
+
+Run the uninstall script in the root/install directory. The file is called "uninstall_evaluation_mod.php". 
+Attention: Use the uninstall script from the right version. This might be different to the actual version.]]></diy-instructions>
+	</action-group>
+</mod>

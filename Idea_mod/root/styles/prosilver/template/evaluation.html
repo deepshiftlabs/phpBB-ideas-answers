@@ -1,0 +1,19 @@
+<!-- IF EVALUATION_CAN_VOTE -->
+<div style="float: left; width: 54px; height: 58px;">
+    <span class="Votes" title="{EVALUATION_TITLE}">
+        <a class="<!-- IF EVALUATION_CAN_VOTE_POS -->VoteUp<!-- ELSE -->NotVoteUp<!-- ENDIF --> SignInPopup" href="<!-- IF EVALUATION_CAN_VOTE_POS -->{EVALUATION_LINK}&evaluation=1<!-- ELSE -->#" onclick="return false;<!-- ENDIF -->">
+            <i rel="nofollow" class="ArrowSprite SpriteUp"></i>
+        </a>
+        <span>{EVALUATION_CNT}</span>
+        <a class="<!-- IF EVALUATION_CAN_VOTE_NEG -->VoteDown<!-- ELSE -->NotVoteDown<!-- ENDIF --> SignInPopup" href="<!-- IF EVALUATION_CAN_VOTE_NEG -->{EVALUATION_LINK}&evaluation=-1<!-- ELSE -->#" onclick="return false;<!-- ENDIF -->">
+            <i rel="nofollow" class="ArrowSprite SpriteDown"></i>
+        </a>
+    </span>
+</div>
+<!-- ELSE -->
+<div style="float: left; min-width: 44px; height: 58px; background-color: #905417; -moz-border-radius: 3px 3px 3px 3px;">
+    <span class="eval_rate" style="-moz-border-radius: 3px 3px 3px 3px; background-color: #6C3F11; color: #CCCCCC; padding: 5px 0 2px; text-align: center;">{EVALUATION_RATE_LNG}</span>
+    <span title="{EVALUATION_TITLE}" style="font-size: 18px; color: #FFFFFF; text-align: center; display: block;">{EVALUATION_CNT}</span>
+</div>
+<!-- ENDIF -->
+<div style="margin-left: 50px;">
